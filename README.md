@@ -726,7 +726,7 @@ Assets used in the project are [here](https://drive.google.com/file/d/13_7FofRAC
 
 <div align="center">
 
-<img src="https://avatars.githubusercontent.com/u/122122258?s=400&u=28907e145a09ee6cb9e5756b711ca68badd2555e&v=4" width="100" alt="MoTaz_Y" style="border-radius: 50%;" />
+<img src="./public/assets/MoTaz_Y.png" width="100" alt="MoTaz_Y"  />
 
 </div>
 
