@@ -1,8 +1,6 @@
 <div align="center">
   <br />
-    <a href="https://youtu.be/_W3R2VwRyF4?feature=shared" target="_blank">
-      <img src="https://github.com/adrianhajdin/social_media_app/assets/151519281/be514a19-3cbb-48b7-9acd-2cf4d2e319c4" alt="Project Banner">
-    </a>
+      <img src="https://miro.medium.com/v2/resize:fit:2000/1*d8-4IYqquJ0yGIKZ3bjzWg.png" alt="Project Banner">
   <br />
 
   <div>
@@ -16,7 +14,7 @@
   <h3 align="center">A Social Media Application</h3>
 
    <div align="center">
-     Build this project step by step with our detailed tutorial on <a href="https://www.youtube.com/@javascriptmastery/videos" target="_blank"><b>JavaScript Mastery</b></a> YouTube. Join the JSM family!
+     Build this project step by step by Motaz_Y
     </div>
 </div>
 
@@ -30,21 +28,9 @@
 6. 🔗 [Links](#links)
 7. 🚀 [More](#more)
 
-## 🚨 Tutorial
-
-This repository contains the code corresponding to an in-depth tutorial available on our YouTube channel, <a href="https://www.youtube.com/@javascriptmastery/videos" target="_blank"><b>JavaScript Mastery</b></a>.
-
-If you prefer visual learning, this is the perfect resource for you. Follow our tutorial to learn how to build projects like these step-by-step in a beginner-friendly manner!
-
-<a href="https://youtu.be/_W3R2VwRyF4?feature=shared" target="_blank"><img src="https://github.com/sujatagunale/EasyRead/assets/151519281/1736fca5-a031-4854-8c09-bc110e3bc16d" /></a>
-
 ## <a name="introduction">🤖 Introduction</a>
 
 Explore social media with this user-friendly platform that has a nice look and lots of features. Easily create and explore posts, and enjoy a strong authentication system and quick data fetching using React Query for a smooth user experience.
-
-If you're getting started and need assistance or face any bugs, join our active Discord community with over 27k+ members. It's a place where people help each other out.
-
-<a href="https://discord.com/invite/n6EdbFJ" target="_blank"><img src="https://github.com/sujatagunale/EasyRead/assets/151519281/618f4872-1e10-42da-8213-1d69e486d02e" /></a>
 
 ## <a name="tech-stack">⚙️ Tech Stack</a>
 
@@ -96,7 +82,7 @@ Make sure you have the following installed on your machine:
 **Cloning the Repository**
 
 ```bash
-git clone https://github.com/adrianhajdin/social_media_app.git
+git clone https://github.com/MoTaz-Y/SnapGram.git
 cd social_media_app
 ```
 
@@ -736,25 +722,49 @@ export const checkIsLiked = (likeList: string[], userId: string) => {
 
 Assets used in the project are [here](https://drive.google.com/file/d/13_7FofRAC3wARqPtAVPi53QNJJRd5RH_/view?usp=sharing)
 
-## <a name="more">🚀 More</a>
+## 👨‍💻 About Me
 
-**Advance your skills with Next.js 14 Pro Course**
+<div align="center">
 
-Enjoyed creating this project? Dive deeper into our PRO courses for a richer learning adventure. They're packed with detailed explanations, cool features, and exercises to boost your skills. Give it a go!
+<img src="https://avatars.githubusercontent.com/u/122122258?s=400&u=28907e145a09ee6cb9e5756b711ca68badd2555e&v=4" width="100" alt="MoTaz_Y" style="border-radius: 50%;" />
 
-<a href="https://jsmastery.pro/next14" target="_blank">
-<img src="https://github.com/sujatagunale/EasyRead/assets/151519281/557837ce-f612-4530-ab24-189e75133c71" alt="Project Banner">
-</a>
+</div>
 
-<br />
-<br />
+<p align="center">
+  I'm <strong>MoTaz</strong>, a <strong>Full-Stack Developer</strong> passionate about building clean, user-friendly applications with modern technologies.
+  <br/>
+  I love working with <strong>MERN Stack</strong>, <strong>TypeScript</strong>, <strong>Tailwind CSS</strong>, and <strong>Appwrite</strong>. I'm also interested in DevOps and building scalable cloud-native apps.
+</p>
 
-**Accelerate your professional journey with the Expert Training program**
+<div align="center">
+  <img src="https://skillicons.dev/icons?i=react,typescript,nodejs,express,mongodb,tailwind,appwrite,git,github,vscode,figma,docker" />
+</div>
 
-And if you're hungry for more than just a course and want to understand how we learn and tackle tech challenges, hop into our personalized masterclass. We cover best practices, different web skills, and offer mentorship to boost your confidence. Let's learn and grow together!
+### 💡 Capabilities
 
-<a href="https://www.jsmastery.pro/masterclass" target="_blank">
-<img src="https://github.com/sujatagunale/EasyRead/assets/151519281/fed352ad-f27b-400d-9b8f-c7fe628acb84" alt="Project Banner">
-</a>
+- ⚡ Building full-stack web apps with MERN & Appwrite
+- 📱 Creating responsive, accessible UIs with Tailwind
+- 🔐 Secure authentication systems
+- ⚙️ API design, database modeling, and cloud deployment
+- 🔄 Real-time data fetching with React Query
+- 🧪 Writing clean, reusable, testable code
 
-#
+---
+
+> "Code is like humor. When you have to explain it, it’s bad."
+
+---
+
+### 🎯 Contact Me
+
+<div align="center">
+  <a href="https://www.linkedin.com/in/motaz-yasser" target="_blank">
+    <img src="https://img.shields.io/badge/LinkedIn-Motaz-blue?style=for-the-badge&logo=linkedin" />
+  </a>
+  <a href="mailto:motazyasser84@gmail.com">
+    <img src="https://img.shields.io/badge/Gmail-Contact-red?style=for-the-badge&logo=gmail" />
+  </a>
+  <a href="https://github.com/MoTaz-Y" target="_blank">
+    <img src="https://img.shields.io/badge/GitHub-Motaz_Y-black?style=for-the-badge&logo=github" />
+  </a>
+</div>
