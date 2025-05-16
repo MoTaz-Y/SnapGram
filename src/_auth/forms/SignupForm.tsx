@@ -15,19 +15,23 @@ import {
 import { Input } from '@/components/ui/input';
 import { SignupValidation } from '@/lib/validation';
 import Loader from '@/components/ui/shared/Loader';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import {
   useCreateUserquery,
   useSignInAccount,
 } from '@/lib/react-query/queriesAndMutations';
+import { useUserContext } from '@/context/AuthContext';
 
 const SignupForm = () => {
+  const navigate = useNavigate();
+  const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
+
   // use react query
-  const { mutateAsync: createUserAccount, isLoading: isCreatingUser } =
+  const { mutateAsync: createUserAccount, isPending: isCreatingAccount } =
     useCreateUserquery();
 
-  const { mutateAsync: signInAccount, isLoading: isSigningIn } =
+  const { mutateAsync: signInAccount, isPending: isSigningIn } =
     useSignInAccount();
   // 1. Define your form.
   const form = useForm<z.infer<typeof SignupValidation>>({
@@ -44,6 +48,7 @@ const SignupForm = () => {
   async function onSubmit(values: z.infer<typeof SignupValidation>) {
     // creating a new user using action crateUserAccount function
     const newUser = await createUserAccount(values);
+    console.log('created new user', newUser);
     if (!newUser) return toast.error('Sign up failed please try again'); // if user is not created, display error message
     toast.success('Signup successful');
     // asign user to session
@@ -53,6 +58,13 @@ const SignupForm = () => {
     });
     if (!session) return toast.error('Sign in failed please try again');
     // redirect to login page
+    const isLoggedIn = await checkAuthUser();
+    if (isLoggedIn) {
+      form.reset();
+      navigate('/');
+    } else {
+      toast.error('Sign in failed please try again');
+    }
   }
   return (
     <Form {...form}>
@@ -122,7 +134,7 @@ const SignupForm = () => {
             )}
           />
           <Button type='submit' className='shad-button_primary'>
-            {isCreatingUser ? (
+            {isCreatingAccount || isUserLoading || isSigningIn ? (
               <div className='flex items-center gap-2'>
                 <Loader /> Loading ...
               </div>

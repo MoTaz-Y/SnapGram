@@ -27,3 +27,14 @@ export const SignupValidation = z.object({
       message: 'Too long',
     }),
 });
+export const SigninValidation = z.object({
+  email: z.string().email(),
+  password: z
+    .string()
+    .min(8, {
+      message: 'Password must be at least 8 characters',
+    })
+    .max(50, {
+      message: 'Too long',
+    }),
+});
