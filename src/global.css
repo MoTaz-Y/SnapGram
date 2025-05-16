@@ -18,6 +18,12 @@ body {
 .text-primary-500 {
   color: #877eff;
 }
+.bg-primary-500 {
+  background-color: #877eff;
+}
+.rounded-10 {
+  border-radius: 10px;
+}
 .text-primary-600 {
   color: #5d5fef;
 }
@@ -118,7 +124,12 @@ body {
   filter: invert(1) brightness(0);
   transition: all 0.2s;
 }
-
+.text-light-2 {
+  color: #f7f7f7;
+}
+.group-hover:invert-white:hover {
+  filter: invert(0) brightness(1);
+}
 .flex-center {
   display: flex;
   justify-content: center;
@@ -491,12 +502,13 @@ body {
 }
 
 .leftsidebar-link {
+  width: 100%;
   border-radius: 0.5rem;
   font-size: 16px;
   font-weight: 500;
   line-height: 140%;
   transition: all 0.3s;
-  background-color: transparent;
+  /* background-color: transparent; */
 }
 
 .post-card {
@@ -526,6 +538,19 @@ body {
   display: none;
   background-color: #09090a;
   width: 100%;
+}
+@media screen and (max-width: 768px) {
+  .bottom-bar {
+    display: flex;
+  }
+  .topbar {
+    display: inline-block;
+  }
+  .leftsidebar {
+    display: none;
+  }
+}
+@media screen and (max-width: 480px) {
 }
 
 .user-card {

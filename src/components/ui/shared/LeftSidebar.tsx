@@ -15,21 +15,21 @@ const LeftSidebar = () => {
     if (isSuccess) {
       navigate(0);
     }
-  }, [isSuccess]);
+  }, [isSuccess, navigate]);
   return (
-    <nav className='legftsidebar'>
-      <div className='flex flex-col gap-11'>
-        <Link to='/'>
+    <nav className='leftsidebar'>
+      <div className='flex flex-col gap-11 '>
+        <Link to='/' className='flex gap-3 items-center'>
           <img
-            src='/assets/images/logo.png'
+            src='/assets/images/logo.svg'
             alt='logo'
             width={170}
             height={36}
           />
         </Link>
-        <Link to={`/profile/${user.id}`} className='flex-center gap-3'>
+        <Link to={`/profile/${user.id}`} className='flex gap-3 items-center'>
           <img
-            src={user.imageUrl || '/assets/icons/profile.placeholder.svg'}
+            src={user.imageUrl || '/assets/icons/profile-placeholder.svg'}
             alt='profile'
             className='w-14 h-14 rounded-full'
           />
@@ -38,7 +38,7 @@ const LeftSidebar = () => {
             <p className='small-regular text-light-3'>@{user.username}</p>
           </div>
         </Link>
-        <ul className='flex flex-col gap-6'>
+        <ul className='flex flex-col gap-6 items-start'>
           {sidebarLinks.map((link: INavLink) => {
             const isActive = pathName === link.route;
             return (
@@ -48,7 +48,10 @@ const LeftSidebar = () => {
                   isActive && 'bg-primary-500'
                 }`}
               >
-                <NavLink to={link.route} className='flex-center gap-4 p-4'>
+                <NavLink
+                  to={link.route}
+                  className='flex items-center gap-4 p-4 w-full'
+                >
                   <img
                     src={link.imgURL}
                     alt={link.label}
@@ -62,15 +65,11 @@ const LeftSidebar = () => {
             );
           })}
         </ul>
-        <Button
-          variant='ghost'
-          className='shad-button'
-          onClick={() => signOut()}
-        >
-          <img src='/assets/icons/logout.svg' alt='logout' />
-          <p className='small-medium lg:base-medium'>Log out</p>
-        </Button>
       </div>
+      <Button variant='ghost' className='shad-button' onClick={() => signOut()}>
+        <img src='/assets/icons/logout.svg' alt='logout' />
+        <p className='small-medium lg:base-medium'>Log out</p>
+      </Button>
     </nav>
   );
 };

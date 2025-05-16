@@ -51,14 +51,16 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           imageUrl: currentAccount.imageUrl,
           bio: currentAccount.bio,
         });
-        setIsLoading(false);
         setIsAuthenticated(true);
         return true;
       }
-      setIsLoading(false);
+      setIsAuthenticated(false);
+      setUser(INITIAL_USER);
       return false;
     } catch (error) {
-      console.log(error);
+      console.error('Auth check error in AuthContext:', error);
+      setIsAuthenticated(false);
+      setUser(INITIAL_USER);
       return false;
     } finally {
       setIsLoading(false);
@@ -66,14 +68,40 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    if (
-      localStorage.getItem('cookieFallback') === '[]' ||
-      localStorage.getItem('cookieFallback') === null
-    )
-      navigate('/sign-in');
+    const validateSession = async () => {
+      const cookieFallback = localStorage.getItem('cookieFallback');
+      // Appwrite uses 'cookieFallback' to store session information for web platforms.
+      // If it's '[]' or null, it often means no active session.
+      if (cookieFallback === '[]' || cookieFallback === null) {
+        setIsAuthenticated(false);
+        setUser(INITIAL_USER);
+        setIsLoading(false); // Ensure loading is set to false
+        // Only navigate if not on a public route already (e.g. sign-in, sign-up)
+        // This check depends on your routing setup.
+        if (
+          window.location.pathname !== '/sign-in' &&
+          window.location.pathname !== '/sign-up'
+        ) {
+          navigate('/sign-in');
+        }
+        return;
+      }
 
-    checkAuthUser();
-  }, []);
+      // If cookieFallback exists, try to verify the session with the backend.
+      const isAuthenticated = await checkAuthUser();
+      if (!isAuthenticated) {
+        // If checkAuthUser fails, navigate to sign-in unless already there.
+        if (
+          window.location.pathname !== '/sign-in' &&
+          window.location.pathname !== '/sign-up'
+        ) {
+          navigate('/sign-in');
+        }
+      }
+    };
+
+    validateSession();
+  }, [navigate]);
   const value = {
     user,
     setUser,
