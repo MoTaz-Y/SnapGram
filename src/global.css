@@ -27,9 +27,16 @@ body {
 .text-primary-600 {
   color: #5d5fef;
 }
+.text-light-4 {
+  color: #f9f9f9;
+}
 .text-secondary-500 {
   color: #ffb620;
 }
+.bg-dark-3 {
+  background-color: #1a1a1a;
+}
+
 .h1-bold {
   font-size: 36px;
   font-weight: 700;
@@ -548,6 +555,12 @@ body {
   }
   .leftsidebar {
     display: none;
+  }
+  .md-h2-bold {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 140%;
+    letter-spacing: -0.05em;
   }
 }
 @media screen and (max-width: 480px) {
