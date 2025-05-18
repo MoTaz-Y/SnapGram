@@ -52,7 +52,6 @@ export default function PostForm({ post }: PostFromProps) {
 
     // Creating a new post. ACTION === 'CREATE'
     const newPost = await createPost({ ...value, userId: user.id });
-    console.log(newPost);
     if (!newPost) {
       toast.error('Something went wrong');
     } else {

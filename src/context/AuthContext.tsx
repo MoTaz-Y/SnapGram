@@ -21,8 +21,6 @@ const INITIAL_STATE = {
 };
 
 const AuthContext = createContext<IContextType>(INITIAL_STATE);
-console.log('AuthContext');
-console.log(AuthContext);
 // const useAuth = () => {
 //   const context = useContext(AuthContext);
 //   if (!AuthContext) {
@@ -40,8 +38,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(true);
     try {
       const currentAccount = await getCurrentUser();
-      console.log('currentAccount=======================');
-      console.log(currentAccount);
       if (currentAccount) {
         setUser({
           id: currentAccount.$id,

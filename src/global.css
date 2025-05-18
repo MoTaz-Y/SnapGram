@@ -132,7 +132,10 @@ body {
   font-size: 12px;
   font-weight: 400;
 }
-
+.lg-base-medium {
+  font-size: 12px;
+  font-weight: 500;
+}
 .tiny-medium {
   font-size: 10px;
   font-weight: 500;

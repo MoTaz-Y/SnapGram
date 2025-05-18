@@ -48,7 +48,6 @@ const SignupForm = () => {
   async function onSubmit(values: z.infer<typeof SignupValidation>) {
     // creating a new user using action crateUserAccount function
     const newUser = await createUserAccount(values);
-    console.log('created new user', newUser);
     if (!newUser) return toast.error('Sign up failed please try again'); // if user is not created, display error message
     toast.success('Signup successful');
     // asign user to session

@@ -1,3 +1,4 @@
+import { useUserContext } from '@/context/AuthContext';
 import { multiFormatDateString } from '@/lib/utils';
 import type { Models } from 'appwrite';
 import { Link } from 'react-router-dom';
@@ -7,11 +8,13 @@ type PostCardProps = {
 };
 
 const PostCard = ({ post }: PostCardProps) => {
+  const { user } = useUserContext();
+  if (!post.creator) return;
   return (
     <div className='post-card'>
       <div className='flex-between'>
-        <div className='flex items-center gap-3'>
-          <Link to={`/profile/${post.creator.$id}`}>
+        <Link to={`/profile/${post.creator.$id}`}>
+          <div className='flex items-center gap-3'>
             <img
               src={
                 post?.creator?.imageUrl ||
@@ -20,9 +23,7 @@ const PostCard = ({ post }: PostCardProps) => {
               alt='user'
               className='w-12 h-12 rounded-full object-cover lg:h-12'
             />
-          </Link>
-          <div className='flex flex-col'>
-            <p>
+            <div className='flex flex-col'>
               <p className='base-medium lg-body-bold text-light-1'>
                 {post?.creator?.name}
               </p>
@@ -35,10 +36,36 @@ const PostCard = ({ post }: PostCardProps) => {
                   {post?.location}
                 </p>
               </div>
-            </p>
+            </div>
           </div>
-        </div>
+        </Link>
+        {post.creator.$id === user?.id && (
+          <Link to={`/update-post/${post.$id}`}>
+            <img
+              src='/assets/icons/edit.svg'
+              alt='edit'
+              className='w-5 h-5 cursor-pointer'
+            />
+          </Link>
+        )}
       </div>
+      <Link to={`/post/${post.$id}`}>
+        <div className='small-medium lg-base-medium py-5'>
+          <p>{post?.caption}</p>
+          <ul className='flex gap-1 mt-2'>
+            {post?.tags?.map((tag: string) => (
+              <li key={tag} className='text-light-3 p-1'>
+                #{tag}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <img
+          src={post.imageUrl || '/assets/icons/profile-placeholder.svg'}
+          alt='post image'
+          className='post-card_img'
+        />
+      </Link>
     </div>
   );
 };

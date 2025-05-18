@@ -19,10 +19,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useSignInAccount } from '@/lib/react-query/queriesAndMutations';
 import { useUserContext } from '@/context/AuthContext';
+import { useEffect } from 'react';
 
 const SigninForm = () => {
   const navigate = useNavigate();
-  const { checkAuthUser, isLoading: isUserLoading, isAuthenticated } = useUserContext();
+  const {
+    checkAuthUser,
+    isLoading: isUserLoading,
+    isAuthenticated,
+  } = useUserContext();
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -53,8 +58,6 @@ const SigninForm = () => {
     if (!session) return toast.error('Sign in failed please try again');
     // redirect to login page
     const isLoggedIn = await checkAuthUser();
-    console.log(isLoggedIn);
-    console.log('isLoggedIn');
     if (isLoggedIn) {
       form.reset();
       navigate('/');
@@ -104,7 +107,7 @@ const SigninForm = () => {
             )}
           />
           <Button type='submit' className='shad-button_primary'>
-            {isUserLoading ? (
+            {isUserLoading || isPending ? (
               <div className='flex items-center gap-2'>
                 <Loader /> Loading ...
               </div>
