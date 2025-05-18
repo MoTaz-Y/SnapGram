@@ -350,3 +350,69 @@ export async function getRecentPosts() {
     console.log(error);
   }
 }
+
+// ==================================================  LIKE POST
+export async function likePost(postId: string, likesArray: string[]) {
+  try {
+    const updatedPost = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.postCollectionId,
+      postId,
+      {
+        likes: likesArray,
+      }
+    );
+    if (!updatedPost) throw new Error('Post not updated');
+    return updatedPost;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// ==================================================  SAVE POST
+export async function savePost(postId: string, userId: string) {
+  try {
+    const updatedPost = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.saveCollectionId,
+      ID.unique(),
+      {
+        user: userId,
+        post: postId,
+      }
+    );
+    if (!updatedPost) throw new Error('Post not saved');
+    return updatedPost;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// ==================================================  DELETE SAVED POST
+export async function deleteSavedPost(savedRecordId: string) {
+  try {
+    const statusCode = await databases.deleteDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.saveCollectionId,
+      savedRecordId
+    );
+    if (statusCode !== 204) throw new Error('Post not deleted');
+    return { status: 'ok' };
+  } catch (error) {
+    console.log(error);
+  }
+}
+// ==================================================  GET SAVED POSTS
+export async function getSavedPosts(userId: string) {
+  try {
+    const posts = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.saveCollectionId,
+      [Query.equal('user', userId)]
+    );
+    if (!posts) throw new Error('Posts not found');
+    return posts;
+  } catch (error) {
+    console.log(error);
+  }
+}
