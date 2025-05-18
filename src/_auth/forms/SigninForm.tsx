@@ -22,7 +22,14 @@ import { useUserContext } from '@/context/AuthContext';
 
 const SigninForm = () => {
   const navigate = useNavigate();
-  const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
+  const { checkAuthUser, isLoading: isUserLoading, isAuthenticated } = useUserContext();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
   // use react query
   const { mutateAsync: signInAccount, isPending } = useSignInAccount();
@@ -97,7 +104,7 @@ const SigninForm = () => {
             )}
           />
           <Button type='submit' className='shad-button_primary'>
-            {isUserLoading || isPending ? (
+            {isUserLoading ? (
               <div className='flex items-center gap-2'>
                 <Loader /> Loading ...
               </div>

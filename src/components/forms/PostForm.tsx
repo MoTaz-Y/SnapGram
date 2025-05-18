@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,27 +14,55 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '../ui/textarea';
 import FileUploader from '../ui/shared/FileUploader';
+import { PostValidation } from '@/lib/validation';
+import { useUserContext } from '@/context/AuthContext';
+import { toast } from 'sonner';
+import type { Models } from 'appwrite';
+import { useNavigate } from 'react-router-dom';
+import { useCreatePost } from '@/lib/react-query/queriesAndMutations';
 
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
-});
-export default function PostForm({ post }) {
+type PostFromProps = {
+  post?: Models.Document;
+};
+export default function PostForm({ post }: PostFromProps) {
+  const { user } = useUserContext();
+  const navigate = useNavigate();
   // ...
   // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof PostValidation>>({
+    resolver: zodResolver(PostValidation),
     defaultValues: {
-      username: '',
+      caption: post ? post?.caption : '',
+      file: [],
+      location: post ? post.location : '',
+      tags: post ? post.tags.join(',') : '',
     },
   });
 
+  // React Query
+  const { mutateAsync: createPost, isPending: isLoadingCreate } =
+    useCreatePost();
+  // const { mutateAsync: updatePost, isPending: isUpdating } = useUpdatePost();
+  // const { mutateAsync: deletePost, isPending: isDeleting } = useDeletePost();
+
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(value: z.infer<typeof PostValidation>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+
+    // Creating a new post. ACTION === 'CREATE'
+    const newPost = await createPost({ ...value, userId: user.id });
+    console.log(newPost);
+    if (!newPost) {
+      toast.error('Something went wrong');
+    } else {
+      form.reset();
+      if (isLoadingCreate) {
+        console.log('Post is creating now');
+      }
+      toast.success('Post created successfully');
+      navigate('/');
+    }
   }
 
   return (
@@ -83,7 +110,7 @@ export default function PostForm({ post }) {
             <FormItem>
               <FormLabel className='shad-form_label'>Add Location</FormLabel>
               <FormControl>
-                <Input type='text' className='shad-input' />
+                <Input type='text' className='shad-input' {...field} />
               </FormControl>
               <FormMessage className='shad-form_message' />
             </FormItem>
@@ -102,6 +129,7 @@ export default function PostForm({ post }) {
                   type='text'
                   className='shad-input'
                   placeholder='Js, ReactJs, NextJs'
+                  {...field}
                 />
               </FormControl>
               <FormMessage className='shad-form_message' />
