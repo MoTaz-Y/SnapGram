@@ -1,4 +1,4 @@
-import type { INewPost, INewUser } from '@/types';
+import type { INewPost, INewUser, IUpdatePost } from '@/types';
 import { account, appwriteConfig, avatars, databases, storage } from './config';
 import { Query, ID } from 'appwrite';
 
@@ -234,6 +234,89 @@ export async function signOutAccount() {
 // }
 
 // ===================================================== POSTS APPWRITE
+// ================================================== UPDATE POST
+export async function updatePost(post: IUpdatePost) {
+  try {
+    const hasFileToUpdate = post.file && post.file.length > 0;
+    let image = {
+      imageUrl: post.imageUrl,
+      imageId: post.imageId,
+    };
+    if (hasFileToUpdate) {
+      const uploadedFile = await uploadFile(post.file[0]);
+      if (!uploadedFile || !uploadedFile.$id) {
+        console.error('[createPost] File upload failed or $id is missing.');
+        throw new Error('File upload failed or $id is missing.');
+      }
+      const actualFileUrlString = getFileViewUrl(uploadedFile.$id);
+
+      if (!actualFileUrlString) {
+        console.error(
+          '[createPost] getFileViewUrl returned a falsy string value.'
+        );
+        await deleteFile(uploadedFile.$id);
+        throw new Error(
+          'File URL creation failed (getFileViewUrl returned falsy string).'
+        );
+      }
+      image = {
+        ...image,
+        imageUrl: actualFileUrlString,
+        imageId: uploadedFile.$id,
+      };
+    }
+
+    const tags = post.tags?.replace(/ /g, '').split(',') || [];
+
+    const postDataForAppwrite = {
+      caption: post.caption,
+      imageUrl: image.imageUrl, // استخدام الرابط النصي مباشرة
+      imageId: image.imageId,
+      location: post.location,
+      tags: tags,
+    };
+
+    const updatedPost = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.postCollectionId,
+      post.postId,
+      postDataForAppwrite
+    );
+
+    if (!updatedPost) {
+      console.error(
+        '[createPost] Post document creation failed (newPostDocument is falsy).'
+      );
+      await deleteFile(post.imageId);
+      throw new Error('Post document creation failed');
+    }
+
+    return updatedPost;
+  } catch (error) {
+    console.error('[createPost] Error caught:', error);
+    throw error;
+  }
+}
+
+// ================================================== GET DELETE POST
+export async function deletePost(postId: string, imageId: string) {
+  if (!postId || !imageId) throw new Error('Invalid postId or imageId');
+  try {
+    await databases.deleteDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.postCollectionId,
+      postId
+    );
+    try {
+      await storage.deleteFile(appwriteConfig.storageId, imageId);
+    } catch (error) {
+      console.error('[createPost] Error deleting file:', imageId, error);
+    }
+    return { status: 'ok' };
+  } catch (error) {
+    console.log(error);
+  }
+}
 // // ================================================== GET FILE URL
 // تم تعديل نوع الإرجاع إلى string
 export function getFileViewUrl(fileId: string): string {
@@ -414,5 +497,58 @@ export async function getSavedPosts(userId: string) {
     return posts;
   } catch (error) {
     console.log(error);
+  }
+}
+
+// ==================================================  GET POST BY ID
+export async function getPostById(postId: string) {
+  if (!postId) throw new Error('Invalid postId');
+  try {
+    const post = await databases.getDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.postCollectionId,
+      postId
+    );
+
+    if (!post) throw new Error('Post not found');
+
+    return post;
+  } catch (error) {
+    console.error('Error fetching post by ID:', error);
+    throw error;
+  }
+}
+
+// ==================================================  SEARCH POSTS
+export async function searchPosts(searchTerm: string) {
+  try {
+    const posts = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.postCollectionId,
+      [Query.search('caption', searchTerm)]
+    );
+    if (!posts) throw new Error('Posts not found');
+    return posts;
+  } catch (error) {
+    console.error('Error searching posts:', error);
+  }
+}
+
+// ==================================================  GET INFINITE POSTS
+export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
+  const queries = [Query.orderDesc('$createdAt'), Query.limit(10)];
+  if (pageParam) {
+    queries.push(Query.cursorAfter(pageParam.toString()));
+  }
+  try {
+    const posts = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.postCollectionId,
+      queries
+    );
+    if (!posts) throw new Error('Posts not found');
+    return posts;
+  } catch (error) {
+    console.error('Error fetching infinite posts:', error);
   }
 }

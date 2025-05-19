@@ -17,7 +17,7 @@ const Home = () => {
           <h2 className='h3-bold md-h2-bold text-left w-full'>Home Feed</h2>
           {isPostLoading && !posts ? (
             <div className='flex items-center justify-center h-full w-full'>
-              <Loader /> Loaing ...
+              <Loader />
             </div>
           ) : (
             <ul className='flex flex-col flex-1 gap-9 w-full'>
