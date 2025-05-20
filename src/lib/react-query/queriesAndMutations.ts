@@ -25,6 +25,7 @@ import {
 } from '../appwrite/api';
 import type { INewPost, INewUser, IUpdatePost } from '@/types';
 import { QUERY_KEYS } from './queryKeys';
+import type { Models } from 'appwrite';
 
 // ============================================================
 // AUTH QUERIES
@@ -195,13 +196,30 @@ export const useSearchPosts = (searchTerm: string) => {
 export const useGetPosts = () => {
   return useInfiniteQuery({
     queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
+    initialPageParam: 0,
     queryFn: getInfinitePosts,
-    getNextPageParam: (lastPage) => {
-      if (lastPage && lastPage.documents.length === 0) {
+    getNextPageParam: (
+      lastPage: Models.DocumentList<Models.Document> | undefined
+    ): number | null => {
+      if (!lastPage || lastPage.documents.length === 0) {
         return null;
       }
       const lastId = lastPage?.documents[lastPage.documents.length - 1].$id;
-      return lastId;
+      return parseInt(lastId);
     },
   });
 };
+
+// export const useGetPosts = () => {
+//   return useInfiniteQuery({
+//     queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
+//     queryFn: getInfinitePosts,
+//     getNextPageParam: (lastPage) => {
+//       if (lastPage && lastPage.documents.length === 0) {
+//         return null;
+//       }
+//       const lastId = lastPage?.documents[lastPage.documents.length - 1].$id;
+//       return lastId;
+//     },
+//   });
+// };
